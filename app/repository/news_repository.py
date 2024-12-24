@@ -3,34 +3,26 @@ from app.repository.classification import classify_article, extract_location
 from app.repository.elastic_repository import save_article_to_elastic
 from app.repository.geocoding import get_coordinates
 
-
 def format_date(date_str):
-    """Convert various date formats to ISO format."""
     if not date_str:
         return datetime.now().isoformat()
-
     try:
-        # Try parsing various formats
         formats = [
-            "%Y-%m-%dT%H:%M:%SZ",  # ISO format
+            "%Y-%m-%dT%H:%M:%SZ",
             "%Y-%m-%d %H:%M:%S",
             "%Y-%m-%d",
             "%d/%m/%Y",
             "%Y-%m-%dT%H:%M:%S.%fZ"
         ]
-
         for fmt in formats:
             try:
                 return datetime.strptime(date_str, fmt).isoformat()
             except ValueError:
                 continue
-
-        # If no format matches, return current time
         return datetime.now().isoformat()
     except Exception as e:
         print(f"Date parsing error: {e}")
         return datetime.now().isoformat()
-
 
 def process_and_store_article(article):
     try:
@@ -39,9 +31,7 @@ def process_and_store_article(article):
         date_time = format_date(article.get("dateTime", ""))
         url = article.get("url", "")
         source = article.get("source", {}).get("title", "Unknown")
-
         category = classify_article(title, body)
-
         if category in ["Historical Terror Event", "Current Terror Event"]:
             print('This article is historical or current')
             location = extract_location(title, body)
@@ -54,7 +44,6 @@ def process_and_store_article(article):
         else:
             location = "Global"
             coordinates = {"latitude": None, "longitude": None}
-
         processed_article = {
             "title": title,
             "body": body,
@@ -66,7 +55,6 @@ def process_and_store_article(article):
             "url": url,
             "source": source
         }
-
         save_article_to_elastic(processed_article)
         return processed_article
     except Exception as e:

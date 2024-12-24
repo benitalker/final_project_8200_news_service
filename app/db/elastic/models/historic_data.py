@@ -7,7 +7,6 @@ from enum import Enum
 class Coordinates:
     lat: float
     lon: float
-
     def to_dict(self) -> Dict[str, float]:
         return {
             "lat": self.lat,
@@ -28,7 +27,6 @@ class TerrorEvent:
     confidence: float
     source_url: str
     coordinates: Optional[Coordinates]
-
     def to_elastic_doc(self) -> Dict[str, Any]:
         return {
             "title": self.title,

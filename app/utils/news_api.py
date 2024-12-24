@@ -1,5 +1,4 @@
 import requests
-
 from app.db.elastic_search_db import get_elastic_client
 
 API_KEY = "5a8e538e-9d6e-4730-81ee-abf12bf73c90"

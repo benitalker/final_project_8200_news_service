@@ -1,6 +1,5 @@
 from elasticsearch import Elasticsearch
 
-
 def get_elastic_client():
     return Elasticsearch(
         hosts=["http://localhost:9200"],
@@ -8,20 +7,16 @@ def get_elastic_client():
         verify_certs=False,
     )
 
-
 def create_index(index_name="news_articles", mapping=None):
     try:
         client = get_elastic_client()
-        # Delete existing index if it exists
         if client.indices.exists(index=index_name):
             print(f"Index '{index_name}' already exists.")
             return
-
         client.indices.create(index=index_name, body=mapping)
         print(f"Index '{index_name}' created successfully.")
     except Exception as e:
         print(f"Error creating index '{index_name}': {e}")
-
 
 news_mapping = {
     "settings": {

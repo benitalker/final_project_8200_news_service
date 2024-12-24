@@ -1,10 +1,8 @@
 import json
 import math
 from datetime import datetime
-
 from app.db.elastic_search_db import get_elastic_client
 from app.utils.config import ELASTIC_INDEX
-
 
 def save_article_to_elastic(article):
     try:
